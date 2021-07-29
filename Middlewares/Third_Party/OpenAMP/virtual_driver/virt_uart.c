@@ -66,6 +66,15 @@ static int VIRT_UART_read_cb(struct rpmsg_endpoint *ept, void *data,
   return 0;
 }
 
+void VIRT_UART_unbind_cb(struct rpmsg_endpoint *ept)
+{
+   VIRT_UART_HandleTypeDef *huart = metal_container_of(ept, VIRT_UART_HandleTypeDef, ept);
+
+   if (huart->UnbindCallback != NULL) {
+     huart->UnbindCallback(huart);
+   }
+}
+
 VIRT_UART_StatusTypeDef VIRT_UART_Init(VIRT_UART_HandleTypeDef *huart)
 {
 
@@ -74,7 +83,7 @@ VIRT_UART_StatusTypeDef VIRT_UART_Init(VIRT_UART_HandleTypeDef *huart)
   /* Create a endpoint for rmpsg communication */
 
   status = OPENAMP_create_endpoint(&huart->ept, RPMSG_SERVICE_NAME, RPMSG_ADDR_ANY,
-		  	  	  	  	  	  	   VIRT_UART_read_cb, NULL);
+		  	  	  	  	  	  	   VIRT_UART_read_cb, VIRT_UART_unbind_cb);
 
   if(status < 0) {
     return VIRT_UART_ERROR;
@@ -100,6 +109,10 @@ VIRT_UART_StatusTypeDef VIRT_UART_RegisterCallback(VIRT_UART_HandleTypeDef *huar
   {
   case VIRT_UART_RXCPLT_CB_ID :
     huart->RxCpltCallback = pCallback;
+    break;
+
+  case VIRT_UART_UNBIND_CB_ID :
+    huart->UnbindCallback = pCallback;
     break;
 
   default :
