@@ -37,6 +37,7 @@ typedef struct __VIRT_UART_HandleTypeDef
   uint8_t              *pRxBuffPtr;   /*!< Pointer to VIRTUAL UART Rx transfer Buffer */
   uint16_t              RxXferSize;   /*!< VIRTUAL UART Rx Transfer size              */
   void    (* RxCpltCallback)( struct __VIRT_UART_HandleTypeDef * hppp);    /*!< RX CPLT callback    */
+  void    (* UnbindCallback)( struct __VIRT_UART_HandleTypeDef * hppp);    /*!< called when remote ept is destroyed.    */
 }VIRT_UART_HandleTypeDef;
 
 
@@ -52,6 +53,7 @@ typedef enum
 typedef enum
 {
   VIRT_UART_RXCPLT_CB_ID          = 0x00U,    /*!< PPP event 1 callback ID     */
+  VIRT_UART_UNBIND_CB_ID          = 0x01U,
 }VIRT_UART_CallbackIDTypeDef;
 
 

@@ -380,7 +380,6 @@ static int rpmsg_virtio_send_offchannel_raw(struct rpmsg_device *rdev,
  */
 static void rpmsg_virtio_tx_callback(struct virtqueue *vq)
 {
-	(void)vq;
 }
 
 /**
@@ -537,6 +536,15 @@ int rpmsg_virtio_get_buffer_size(struct rpmsg_device *rdev)
 	return size;
 }
 
+
+
+void rpmsg_virtio_unbind_callback(struct rpmsg_endpoint *ept)
+{
+   struct rpmsg_device *rdev = ept->rdev;
+	metal_mutex_acquire(&rdev->lock);
+   metal_mutex_release(&rdev->lock);
+}
+
 int rpmsg_init_vdev(struct rpmsg_virtio_device *rvdev,
 		    struct virtio_device *vdev,
 		    rpmsg_ns_bind_cb ns_bind_cb,
@@ -660,7 +668,7 @@ int rpmsg_init_vdev(struct rpmsg_virtio_device *rvdev,
 	if ((dev_features & (1 << VIRTIO_RPMSG_F_NS))) {
 		rpmsg_init_ept(&rdev->ns_ept, "NS",
 			       RPMSG_NS_EPT_ADDR, RPMSG_NS_EPT_ADDR,
-			       rpmsg_virtio_ns_callback, NULL);
+			       rpmsg_virtio_ns_callback, rpmsg_virtio_unbind_callback);
 		(void)rpmsg_register_endpoint(rdev, &rdev->ns_ept);
 	}
 
