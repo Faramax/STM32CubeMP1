@@ -55,10 +55,10 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* UART RX FIFO depth */
-#define RX_FIFO_DEPTH 8U
+#define RX_FIFO_DEPTH 16U
 
 /* UART TX FIFO depth */
-#define TX_FIFO_DEPTH 8U
+#define TX_FIFO_DEPTH 16U
 
 /* Private define ------------------------------------------------------------*/
 /* Private macros ------------------------------------------------------------*/
