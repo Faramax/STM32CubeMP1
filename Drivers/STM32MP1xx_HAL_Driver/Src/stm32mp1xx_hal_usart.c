@@ -201,8 +201,8 @@ static void USART_MDMARxAbortCallback(MDMA_HandleTypeDef *hmdma);
 #endif
 static HAL_StatusTypeDef USART_WaitOnFlagUntilTimeout(USART_HandleTypeDef *husart, uint32_t Flag, FlagStatus Status,
                                                       uint32_t Tickstart, uint32_t Timeout);
-static HAL_StatusTypeDef USART_SetConfig(USART_HandleTypeDef *husart);
-static HAL_StatusTypeDef USART_CheckIdleState(USART_HandleTypeDef *husart);
+HAL_StatusTypeDef USART_SetConfig(USART_HandleTypeDef *husart);
+HAL_StatusTypeDef USART_CheckIdleState(USART_HandleTypeDef *husart);
 static void USART_TxISR_8BIT(USART_HandleTypeDef *husart);
 static void USART_TxISR_16BIT(USART_HandleTypeDef *husart);
 static void USART_TxISR_8BIT_FIFOEN(USART_HandleTypeDef *husart);
@@ -3322,7 +3322,7 @@ static HAL_StatusTypeDef USART_WaitOnFlagUntilTimeout(USART_HandleTypeDef *husar
   * @param husart USART handle.
   * @retval HAL status
   */
-static HAL_StatusTypeDef USART_SetConfig(USART_HandleTypeDef *husart)
+HAL_StatusTypeDef USART_SetConfig(USART_HandleTypeDef *husart)
 {
   uint32_t tmpreg;
   USART_ClockSourceTypeDef clocksource;
@@ -3439,7 +3439,7 @@ static HAL_StatusTypeDef USART_SetConfig(USART_HandleTypeDef *husart)
   * @param husart USART handle.
   * @retval HAL status
   */
-static HAL_StatusTypeDef USART_CheckIdleState(USART_HandleTypeDef *husart)
+HAL_StatusTypeDef USART_CheckIdleState(USART_HandleTypeDef *husart)
 {
   uint32_t tickstart;
 
