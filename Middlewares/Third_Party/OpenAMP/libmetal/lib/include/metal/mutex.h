@@ -12,7 +12,11 @@
 #ifndef __METAL_MUTEX__H__
 #define __METAL_MUTEX__H__
 
+#ifdef METAL_FREERTOS
+#include <metal/system/freertos/mutex.h>
+#else
 #include <metal/system/generic/mutex.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {

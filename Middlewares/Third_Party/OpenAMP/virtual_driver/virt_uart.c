@@ -46,7 +46,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* this string will be sent to remote processor */
-#define RPMSG_SERVICE_NAME              "rpmsg-tty-channel"
+#define RPMSG_SERVICE_NAME              "rpmsg-tty"
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -123,7 +123,7 @@ VIRT_UART_StatusTypeDef VIRT_UART_RegisterCallback(VIRT_UART_HandleTypeDef *huar
   return status;
 }
 
-VIRT_UART_StatusTypeDef VIRT_UART_Transmit(VIRT_UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size)
+VIRT_UART_StatusTypeDef VIRT_UART_Transmit(VIRT_UART_HandleTypeDef *huart, const void *pData, uint16_t Size)
 {
 	int res;
 

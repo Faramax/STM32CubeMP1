@@ -18,13 +18,12 @@
 *****************************************************************************
 ** @attention
 **
-** <h2><center>&copy; Copyright (c) 2019 STMicroelectronics. 
-** All rights reserved.</center></h2>
+** Copyright (c) 2021 STMicroelectronics.
+** All rights reserved.
 **
-** This software component is licensed by ST under BSD 3-Clause license,
-** the License; You may not use this file except in compliance with the 
-** License. You may obtain a copy of the License at:
-**                       opensource.org/licenses/BSD-3-Clause
+** This software is licensed under terms that can be found in the LICENSE file
+** in the root directory of this software component.
+** If no LICENSE file comes with this software, it is provided AS-IS.
 **
 *****************************************************************************
 */
@@ -90,11 +89,11 @@ SECTIONS
   } > m_text
 
   .ARM.extab   : { 
-  	. = ALIGN(4);
-  	*(.ARM.extab* .gnu.linkonce.armextab.*)
-  	. = ALIGN(4);
+    . = ALIGN(4);
+    *(.ARM.extab* .gnu.linkonce.armextab.*)
+    . = ALIGN(4);
   } > m_text
-  
+
   .ARM : {
     . = ALIGN(4);
     __exidx_start = .;
@@ -111,7 +110,7 @@ SECTIONS
     PROVIDE_HIDDEN (__preinit_array_end = .);
     . = ALIGN(4);
   } > m_text
-  
+
   .init_array :
   {
     . = ALIGN(4);
@@ -121,7 +120,7 @@ SECTIONS
     PROVIDE_HIDDEN (__init_array_end = .);
     . = ALIGN(4);
   } > m_text
-  
+
   .fini_array :
   {
     . = ALIGN(4);
@@ -158,11 +157,12 @@ SECTIONS
     KEEP (*(.resource_table*))
     . = ALIGN(4);
   } > m_data
-  
+  _eirsc = LOADADDR(.resource_table) + SIZEOF(.resource_table);
+  ASSERT(SIZEOF(.resource_table) == 0 || _eirsc <= text_end, "no room for resource_table load section in text")
 
   /* Uninitialized data section into RAM memory */
   . = ALIGN(4);
-  .bss :
+  .bss : AT (ADDR (.bss))
   {
     /* This is used by the startup in order to initialize the .bss secion */
     _sbss = .;         /* define a global symbol at bss start */
@@ -187,7 +187,6 @@ SECTIONS
     . = ALIGN(8);
   } > m_data
 
-  
 
   /* Remove information from the compiler libraries */
   /DISCARD/ :

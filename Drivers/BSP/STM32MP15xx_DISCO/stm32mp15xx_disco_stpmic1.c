@@ -6,19 +6,18 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics. 
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the 
-  * License. You may obtain a copy of the License at:
-  *                       opensource.org/licenses/BSD-3-Clause
-  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
 
 /* Includes ----------------------------------------------------------------------*/
+#include "stm32mp15xx_disco.h"
 #include "stm32mp15xx_disco_bus.h"
 #include "stm32mp15xx_disco_stpmic1.h"
 #include <string.h>
@@ -793,7 +792,6 @@ regul_struct regulators_table[] = {
 /* Private function prototypes -----------------------------------------------*/
 void STPMU1_IrqHandler(void);
 void STPMU1_INTn_Callback(PMIC_IRQn IRQn);
-static void My_Error_Handler(void);
 static regul_struct *STPMU1_Get_Regulator_Data(PMIC_RegulId_TypeDef id);
 static uint8_t STPMU1_Voltage_Find_Index(PMIC_RegulId_TypeDef id, uint16_t milivolts);
 
@@ -810,7 +808,7 @@ static regul_struct *STPMU1_Get_Regulator_Data(PMIC_RegulId_TypeDef id)
       return &regulators_table[i];
   }
   /* id not found */
-  My_Error_Handler();
+  BSP_Error_Handler();
   return NULL;
 }
 
@@ -826,7 +824,7 @@ static uint8_t STPMU1_Voltage_Find_Index(PMIC_RegulId_TypeDef id, uint16_t miliv
     }
   }
   /* voltage not found */
-  My_Error_Handler();
+  BSP_Error_Handler();
   return 0;
 }
 
@@ -903,14 +901,17 @@ void STPMU1_IrqHandler(void)
   * @brief  This function is executed in case of error occurrence.
   * @retval None
   */
-static void My_Error_Handler(void)
+void BSP_Error_Handler(void)
 {
-  /* Error if LED1 is slowly blinking (1 sec. period) */
+  BSP_LED_Init(LED_RED);
+
+  /* Infinite loop */
   while(1)
-  {    
-    //BSP_LED_Toggle(LED4);
+  {
+    /* Toggle LED_RED */
+    BSP_LED_Toggle(LED_RED);
     HAL_Delay(500);
-  } 
+  }
 }
 
 
@@ -964,7 +965,7 @@ uint8_t STPMU1_Register_Read(uint8_t register_id)
   /* Check the communication status */
   if(status != BSP_ERROR_NONE)
   {
-    My_Error_Handler();
+    BSP_Error_Handler();
   }
   return Value;
 }
@@ -978,7 +979,7 @@ void STPMU1_Register_Write(uint8_t register_id, uint8_t value)
   /* Check the communication status */
   if(status != BSP_ERROR_NONE)
   {
-    My_Error_Handler();
+    BSP_Error_Handler();
   }
 
   /* verify register content */
@@ -987,7 +988,7 @@ void STPMU1_Register_Write(uint8_t register_id, uint8_t value)
     uint8_t readval = STPMU1_Register_Read(register_id);
     if (readval != value)
     {
-      My_Error_Handler();
+      BSP_Error_Handler();
     }
   }
   return ;
@@ -1293,5 +1294,3 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hI2c4)
 /**
   * @}
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
