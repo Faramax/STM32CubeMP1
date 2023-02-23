@@ -26,19 +26,19 @@ unsigned int sys_irq_save_disable(void)
 	/* Add implementation here */
 }
 
-void sys_irq_enable(unsigned int vector)
-{
-	metal_unused(vector);
-
-	/* Add implementation here */
-}
-
-void sys_irq_disable(unsigned int vector)
-{
-	metal_unused(vector);
-
-	/* Add implementation here */
-}
+//void sys_irq_enable(unsigned int vector)
+//{
+//	metal_unused(vector);
+//
+//	/* Add implementation here */
+//}
+//
+//void sys_irq_disable(unsigned int vector)
+//{
+//	metal_unused(vector);
+//
+//	/* Add implementation here */
+//}
 
 void metal_machine_cache_flush(void *addr, unsigned int len)
 {
