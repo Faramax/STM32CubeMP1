@@ -123,14 +123,18 @@ VIRT_UART_StatusTypeDef VIRT_UART_RegisterCallback(VIRT_UART_HandleTypeDef *huar
   return status;
 }
 
-VIRT_UART_StatusTypeDef VIRT_UART_Transmit(VIRT_UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size)
+VIRT_UART_StatusTypeDef VIRT_UART_Transmit(VIRT_UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, bool Wait)
 {
 	int res;
 
 	if (Size > (RPMSG_BUFFER_SIZE-16))
 	  return VIRT_UART_ERROR;
 
-	res = OPENAMP_send(&huart->ept, pData, Size);
+   if(Wait)
+      res = OPENAMP_send(&huart->ept, pData, Size);
+   else
+      res = OPENAMP_try_send(&huart->ept, pData, Size);
+
 	if (res <0) {
 		return VIRT_UART_ERROR;
 	}
