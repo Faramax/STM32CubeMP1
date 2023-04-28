@@ -49,7 +49,7 @@
 /** @defgroup HAL_Private_Defines HAL Private Defines
   * @{
   */
-  
+
 /**
  * @brief STM32MP1xx HAL Driver version number
    */
@@ -439,6 +439,7 @@ HAL_TickFreqTypeDef HAL_GetTickFreq(void)
   *       is incremented.
   * @note ThiS function is declared as __weak to be overwritten in case of other
   *       implementations in user file.
+  * @note In reality it provides delay 1 ms larger than set
   * @param Delay: specifies the delay time length, in milliseconds.
   * @retval None
   */
@@ -922,7 +923,7 @@ HAL_StatusTypeDef HAL_SYSCFG_EnableIOCompensation(void)
 
   return status;
 }
-  
+
 /**
   * @}
   */
